@@ -1,0 +1,28 @@
+<!doctype html><html lang=ko><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noindex,nofollow">
+<title>유즈퍼널 순위 보고 (보안)</title>
+<style>body{font-family:-apple-system,'Malgun Gothic',sans-serif;background:#0f172a;color:#e2e8f0;
+display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0}
+.box{background:#1e293b;padding:28px;border-radius:14px;width:300px;text-align:center;box-shadow:0 8px 24px #0006}
+h1{font-size:16px;margin:0 0 16px}input{width:100%;box-sizing:border-box;padding:11px;border-radius:8px;
+border:1px solid #334155;background:#0f172a;color:#e2e8f0;font-size:15px}
+button{width:100%;margin-top:10px;padding:11px;border:0;border-radius:8px;background:#3b82f6;color:#fff;font-size:15px;cursor:pointer}
+#err{color:#f87171;font-size:13px;min-height:18px;margin-top:8px}</style></head>
+<body><div class=box><h1>🔒 순위 보고 (비밀번호 필요)</h1>
+<input id=pw type=password placeholder="비밀번호" autofocus>
+<button onclick=go()>열기</button><div id=err></div></div>
+<script>
+const ITER=200000,SALT="U3bwLr9ZSEWxUVS5StvNVQ==",IV="u8Qlr+kBuXoXKhkP",CT="dbVCW51hNVaw3H5mSSKI3QfkouaJevwhEwRCUt56zjacX+aC60hacMjyUrGd6fZfJq2JDTOVrpjpXmB1u6EdebhXgRVLX8yA9abCGyJEh6NO33kvW1HfW+cQ+FyBveMRB2Gcnr4QPE3gruEPr5eCH8kiLhA2e1ON5h4mRrW/Y2n7Jc1foJTyabXqWVwgw8hr33hAGsIY2IXDNLd/HDXHmj1MgEUG31ovBLdbTAmynTHtXWqfb8CXtZIlrw0XdGylpCc3759aeguUQppYyIti4OCwe+wCAdOklkiFeLHzHmNIQHFU3RIPJmCIOYguSOevA13/rnIHrIj9zC/1MfnW7Ul2SHs10ZpoUwLUh+YSCrUr4Yfoh+ql0nn2El3uQeAJUqxQt7w+B3PneXuPSVMiAMSl43uA5yx997OaZ3QpHcIsxmWOODaZCwst2At03Z0QFRzQKxRuhw8y0CbzAxMFW6FcMv5nDN/F417E9e9PDhAbbFu24f8p0Dw+gY4Tp0/q9Jlj7ruU0kQk4eUlXLBXDybQoeEc1TnaQ5rG3Efw2nbxmupzEf6inYvxt1PKUppHrx0SzZw+nLUb4nyx4R+CQ5SL20Vgem9SLPp1N7wquWjsuoEuAXKvNVmnboo7f6LDQILayCn4VzTZRiB+b6Y+9X5ETC1s3iKIP3bfO+9aA5RnV51UnFJHFWnM0358UujiwjgAVAkdc+dfcuH9onVnVI8Czs5528VgPKSdIXRHLpKTuRxVCwHm/dubmgpMldHhJtUrJzbB9NTYdmuT9kwUcHFTiaPybwKVi7tzIutpt7W3A2ybEjqVpazFlPHVM5PK2sCD1TLFWG95t0L7wCpQQmqGdvMJF+3xVWi90h8cuBedIr7zM0iCxEqm3oWi+TG0yg58ODhmRPxzdTW+5e4wYH3TaCNhoDdEDwMJUQnPjPkLX2TA3B/UeVef6ksJ4EevIo6SVTRZu+wU6Q5JHFY6gDxJMI7q/tRSmtdJ2d17voiwa2f9RCIRbfM4Ylo4j4w+XHttokPzZ5ZNe20hU1dS2cuSz343N940oCkOlFWxvQ9hvGuhoF6KBz9lZq4yiIZE18wRcd5A7zOv0Okx2Co1vkbPe9RuXwQQ1SElEaB7aAu5BTm4mh7vM8f1b0elQ9iX4byV";
+const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function go(){
+ const pw=document.getElementById('pw').value;const e=document.getElementById('err');e.textContent='';
+ try{
+  const enc=new TextEncoder(),dec=new TextDecoder();
+  const km=await crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveKey']);
+  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(SALT),iterations:ITER,hash:'SHA-256'},km,{name:'AES-GCM',length:256},false,['decrypt']);
+  const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(IV)},key,b64(CT));
+  document.open();document.write(dec.decode(pt));document.close();
+ }catch(err){e.textContent='비밀번호가 틀렸습니다.';}
+}
+document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')go();});
+</script></body></html>
