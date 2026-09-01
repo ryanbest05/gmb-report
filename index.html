@@ -1,28 +1,6 @@
-<!doctype html><html lang=ko><head><meta charset=utf-8>
+<!doctype html><html lang=ko><meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noindex,nofollow">
-<title>유즈퍼널 순위 보고 (보안)</title>
-<style>body{font-family:-apple-system,'Malgun Gothic',sans-serif;background:#0f172a;color:#e2e8f0;
-display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0}
-.box{background:#1e293b;padding:28px;border-radius:14px;width:300px;text-align:center;box-shadow:0 8px 24px #0006}
-h1{font-size:16px;margin:0 0 16px}input{width:100%;box-sizing:border-box;padding:11px;border-radius:8px;
-border:1px solid #334155;background:#0f172a;color:#e2e8f0;font-size:15px}
-button{width:100%;margin-top:10px;padding:11px;border:0;border-radius:8px;background:#3b82f6;color:#fff;font-size:15px;cursor:pointer}
-#err{color:#f87171;font-size:13px;min-height:18px;margin-top:8px}</style></head>
-<body><div class=box><h1>🔒 순위 보고 (비밀번호 필요)</h1>
-<input id=pw type=password placeholder="비밀번호" autofocus>
-<button onclick=go()>열기</button><div id=err></div></div>
-<script>
-const ITER=200000,SALT="c4W8LOcmTzNqBp8oQj8SPg==",IV="1nOCSM+CYho2bhM3",CT="WtDbQPEUN5JeJaZ1NtADNoI9M6v4IBPWovIbu27+2y0IQBxAfBIsjek6SCJLoLHgJEjRBNXCdd8XkCkYDpeLq2ka7FoSR8sce0hqn6FrIznscdE7AK4ntGNZ8kMsspXnak7HYMH9U6vk5Sl+d+wUAU+8Z+5XfxyMLEe7zjNYUMpIKsDDhrdnXLCHJxXVea7M9rspv9gvuyjalUVmSLWyMqw9IKbUpPYKdFb8FIKxfYUGFP0D6HvBwMyVw339siRa5ba765x2Xm3+jzsoRshc6JQl0Ru7GXycNbkgTVwXq1I/2eBEx62X+zLF5Hqrc6iK8mEl9R8pssQ0CCzY4tPIQ/0J9b2L0QDMMH1Y2T0brdfluKNDBOiKXfrb2OFFrTCmxCalKqb0qQH0dFPZJQ3ION1pnVk8VXUsENwCvAZAbsKKrxHHC1OJnflRHWJFumVpC+foBqaMvDDfJKOMkbnaXmKSg0vSfyrRycq1Mj5I0BS10mfcbwky36qGfmo0W+aV3+wYE1VQlmyu3rGs2EjujQPIyYSBEU5EvTa9VLoQc8Dhb8mmYpOjoFrITjUkWrPbLgisULe7jDbWXe8PXgYQjKQGjX/x2ZljJUqQB+4qCp0GR8iocAw+8cxxXzsIUswEW9xdARZhe1kJaycaCqudk1kD1F9mAeIOQOEy4WhCt59Go6F/HgBPGJBe4izlM5BngQtC+ZEqek+YurfJtRl8M97WgCJYaavQEs3wkLHNGMFmw/lh2VP2GJe5PGZDAPDNpO43JhPpMutvHM/hshAcLTQ/F2xnBsQZ70wmPhWTWmIT6XmGqYHranPIlFJjLrdS1rhJGX4ZGqqvSQ0YQRHUFbcwJl2sG44Q1xIPyLnqJtU6ik6mJJzmR/UVtjz3/T7eshHMlIOlvs3Wu5k6Ef6+MxfhaPJh8HqkyjPiPKhSDjcbMU5u3GmcyD1I06tt4rrjDM2/ZiEiryUs0RClMg/rStXfMPsQGKQqmX1KQ7svfQi3EljQuTUzTeCBlPBU7NlCf2bLQ3jf00NACoF3mnc7kvgRhViWjZ+31IN64RWKN2v+Uj1d0JnC5P4IaCzBk/2HLNArq/lYZj3JxlOdZ61msZWDdBOsuWCB5Q9HyTmhPDAdrsPUv4/iCVf3ggQXEckviNrc/KWDVQPJBrgZujAH37GS1Jji6VfWrpR9g++2Fu3wYkW16/2VyqWstNgab1aViycEuenP3YCslw3w6vx9TB39DChNrvN0NJzWX8dK5BLsc5U42yVRreLcQg==";
-const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
-async function go(){
- const pw=document.getElementById('pw').value;const e=document.getElementById('err');e.textContent='';
- try{
-  const enc=new TextEncoder(),dec=new TextDecoder();
-  const km=await crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveKey']);
-  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(SALT),iterations:ITER,hash:'SHA-256'},km,{name:'AES-GCM',length:256},false,['decrypt']);
-  const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(IV)},key,b64(CT));
-  document.open();document.write(dec.decode(pt));document.close();
- }catch(err){e.textContent='비밀번호가 틀렸습니다.';}
-}
-document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')go();});
-</script></body></html>
+<title>순위보고 관리</title><style>*{box-sizing:border-box}body{font-family:-apple-system,'Malgun Gothic',sans-serif;background:#f4f6f8;padding:24px;color:#17202a}
+main{max-width:680px;margin:auto}h1{font-size:26px}p{color:#687386}a{display:flex;justify-content:space-between;gap:14px;background:white;padding:18px;margin:12px 0;border:1px solid #e5e9ef;border-radius:14px;color:#17202a;text-decoration:none;box-shadow:0 5px 18px #19283c0d}
+a span{color:#4a67d6;font-size:13px;white-space:nowrap}</style><main><h1>구글 지도 순위보고</h1>
+<p>매장을 선택하면 최신 및 과거 순위를 확인할 수 있습니다.</p><a href="Ggq2JKvr_pwXt1GA/"><strong>BBQ Chicken & beer Myeongdong star</strong><span>보고서 열기</span></a><a href="oo359h3e7hd4NWcS/"><strong>BHC 서울시청점</strong><span>보고서 열기</span></a><a href="7yXdmg6ww6IPrwnH/"><strong>홍빠명돈가 명동고기집 (HongBar Korean BBQ)</strong><span>보고서 열기</span></a><a href="vZAe2aZYDc9gaW9s/"><strong>에스리본의원 (S-Reborn Skin Clinic Hongdae)</strong><span>보고서 열기</span></a></main></html>
